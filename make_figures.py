@@ -85,7 +85,8 @@ plt.close(fig)
 with open("results/load_flow.csv", "w") as fh:
     fh.write("bus,vm_pu,va_deg,p_gen_mw,q_gen_mvar,p_load_mw,q_load_mvar\n")
     for i, b in enumerate(buses):
-        g, l = lf.S_gen[i], lf.S_load[i]
+        g, l = lf.S_gen[i] + 0j, lf.S_load[i]
+        g = complex(round(g.real, 2) + 0.0, round(g.imag, 2) + 0.0)   # avoid printing -0.00
         fh.write(f"{b},{lf.vm[i]:.4f},{lf.va_deg[i]:.3f},{g.real:.2f},{g.imag:.2f},{l.real:.2f},{l.imag:.2f}\n")
 with open("results/line_flows.csv", "w") as fh:
     fh.write("from,to,p_from_mw,q_from_mvar,p_loss_mw,q_loss_mvar\n")
